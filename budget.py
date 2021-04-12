@@ -70,7 +70,7 @@ class Category():
         False, otherwise.
         """
         current_balance = self.get_balance()
-        if (current_balance - amount) > 0:
+        if (current_balance - amount) >= 0:
             return True
         else:
             return False
