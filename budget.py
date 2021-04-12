@@ -55,9 +55,9 @@ class Category():
         2. If withdraw successful then deposit amount into other budget.
         Return True if success, False otherwise.
         """
-        with_description = f"Transfer to {category.name}"
-        status = self.withdraw(amount, with_description)
-        if status:
+        if self.check_funds(amount):
+            with_description = f"Transfer to {category.name}"
+            self.withdraw(amount, with_description)
             dep_description = f"Transfer from {self.name}"
             category.deposit(amount, dep_description)
             return True
@@ -160,6 +160,7 @@ def create_spend_chart(categories: list):
             for name in names:
                 lines += '{:^3}'.format(name[x])
             lines += ' \n'
+        lines = lines[:-1]
         return lines
     return head + y_axis() + dash + x_axis()
 
