@@ -12,7 +12,7 @@ class Category():
 
     def get_balance(self):
         """
-        Sum all amounts(withdrawls and deposits) in the ledger.
+        Sum all amounts(withdrawals and deposits) in the ledger.
         Return sum.
         """
         balance = 0
@@ -36,8 +36,8 @@ class Category():
         Add an entry to this budget's ledger.
         Given an amount to withdraw,
         and a description of why the money is being taken out,
-        Record this info in the ledger as a dict, 
-        if there are enough funds.
+        Record this info in the ledger as a dict,
+        iff there are enough funds.
         Return True if the withdraw is success, False otherwise.
         """
         amt = amount * -1
@@ -84,7 +84,7 @@ class Category():
         title = '{:*^30}'.format(self.name)
         lines = ''
         for entry in self.ledger:
-            des = entry["description"][:24]
+            des = entry["description"][:23]
             amt = entry["amount"]
             txt = '{description:<23}{amount:>7.2f}'
             line = txt.format(description=des, amount=amt)
@@ -95,6 +95,10 @@ class Category():
 
 def create_spend_chart(categories: list):
     """
+    Given a list of Category obj,
+    return a histogram of spending.
+    Y-axis is percent of total withdrawals.
+    X-axis is category name.
     """
     how_many = len(categories)
     head = 'Percentage spent by category\n'
@@ -103,7 +107,7 @@ def create_spend_chart(categories: list):
     def spent(category: Category):
         """
         For a category,
-        Return spent, the sum of withdrawls.
+        Return spent, the sum of withdrawals.
         """
         spent = 0
         for entry in category.ledger:
@@ -115,17 +119,25 @@ def create_spend_chart(categories: list):
 
     def percentage(category: Category):
         percent = (spent(category) / total_spent) * 100
-        percent -= percent%10
+        percent -= percent % 10
         return percent
 
     def y_axis():
         tens = [num for num in range(0, 101, 10)]
         tens.sort(reverse=True)
-        # bubbles please.
+        percents = [percentage(cat) for cat in categories]
         lines = ''
         for num in tens:
             txt = '{num:>3}|'
-            lines += txt.format(num=num) + '\n'
+            lines += txt.format(num=num)
+            for x in range(len(percents)):
+                if percents[x] == num:
+                    bar = 'o'
+                    percents[x] -= 10
+                else:
+                    bar = ' '
+                lines += '{bar:^3}'.format(bar=bar)
+            lines += ' \n'
         return lines
 
     def x_axis():
@@ -152,7 +164,6 @@ def create_spend_chart(categories: list):
     return head + y_axis() + dash + x_axis()
 
 
-
 if __name__ == '__main__':
     t1 = Category('Groceries')
 
@@ -168,9 +179,10 @@ if __name__ == '__main__':
     t2 = Category('Clubbing')
     t2.deposit(300.99, 'paycheck')
     status = t1.transfer(100, t2)
+    t2.withdraw(100, 'Tresor')
+    t2.withdraw(100, 'Leather night')
 
     # print(t1)
     # print(t2)
 
     print(create_spend_chart([t1, t2]))
-    print('spam')
