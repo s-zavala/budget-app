@@ -1,7 +1,6 @@
 """
 Budget app by Sofia Zavala
-04/12 Add percentage bubbles please. See line 124. Use Ctrl+G.
-
+04/12/2021
 """
 
 
@@ -168,13 +167,13 @@ def create_spend_chart(categories: list):
 if __name__ == '__main__':
     t1 = Category('Groceries')
 
-    t1.deposit(100.99, 'paycheck')
-    t1.deposit(0)
+    t1.deposit(1000.99, 'paycheck')
+    t1.deposit(0, 'null')
     t1.deposit(.99, 'loose change')
 
-    status = t1.withdraw(0)
+    status = t1.withdraw(0, 'null')
     status = t1.withdraw(.99, 'a very long description of a snack')
-    status = t1.withdraw(200.99, 'fancy snack')
+    status = t1.withdraw(2000.99, 'fancy snack')
     # Should fail bc lack of funds
 
     t2 = Category('Clubbing')
@@ -183,7 +182,7 @@ if __name__ == '__main__':
     t2.withdraw(100, 'Tresor')
     t2.withdraw(100, 'Leather night')
 
-    # print(t1)
-    # print(t2)
+    print(t1)
+    print(t2)
 
     print(create_spend_chart([t1, t2]))
