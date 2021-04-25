@@ -10,10 +10,7 @@ class Category():
         self.ledger = []
 
     def get_balance(self):
-        """
-        Sum all amounts(withdrawals and deposits) in the ledger.
-        Return sum.
-        """
+        """ Return sum of all withdrawals and deposits in the ledger."""
         balance = 0
         for entry in self.ledger:
             amt = entry['amount']
@@ -22,22 +19,24 @@ class Category():
 
     def deposit(self, amount, description=''):
         """
-        Add an entry to this budget's ledger.
-        Given an amount to add to the budget,
-        and a description of why the money is going into the budget,
-        Record this info in the ledger as a dict.
+        Add a deposit entry to ledger.
+        
+        Args:
+        amount -- how much to add
+        description -- where amt comes from
         """
         dep_entry = {"amount": amount, "description": description}
         self.ledger.append(dep_entry)
 
     def withdraw(self, amount, description=''):
         """
-        Add an entry to this budget's ledger.
-        Given an amount to withdraw,
-        and a description of why the money is being taken out,
-        Record this info in the ledger as a dict,
-        iff there are enough funds.
-        Return True if the withdraw is success, False otherwise.
+        Add a withdrawal entry ledger.
+
+        Args:
+        amount -- how much to take out
+        description -- where amt is going
+        Test if amount is less than balance.
+        Return True if success, False otherwise.
         """
         amt = amount * -1
         with_entry = {"amount": amt, "description": description}
@@ -49,9 +48,7 @@ class Category():
 
     def transfer(self, amount, category):
         """
-        Send money from this budget to a different budget.
-        1. Withdraw amount from this budget.
-        2. If withdraw successful then deposit amount into other budget.
+        Withdraw funds from this budget, deposit into another budget.
         Return True if success, False otherwise.
         """
         if self.check_funds(amount):
@@ -65,7 +62,7 @@ class Category():
 
     def check_funds(self, amount):
         """
-        Return True if the current balance - amount is greater than zero.
+        Return True if amount is less than balance.
         False, otherwise.
         """
         current_balance = self.get_balance()
@@ -77,8 +74,7 @@ class Category():
     def __str__(self):
         """
         Make it pretty.
-        Returns a title line, a line for each transaction
-        description and amount, and a total line.
+        Returns a budget title, transaction history, and total.
         """
         title = '{:*^30}'.format(self.name)
         lines = ''
@@ -94,10 +90,10 @@ class Category():
 
 def create_spend_chart(categories: list):
     """
-    Given a list of Category obj,
-    return a histogram of spending.
+    Given a list of Category obj, return a histogram of spending.
+
     Y-axis is percent of total withdrawals.
-    X-axis is category name.
+    X-axis is name.
     """
     how_many = len(categories)
     head = 'Percentage spent by category\n'
@@ -105,8 +101,7 @@ def create_spend_chart(categories: list):
 
     def spent(category: Category):
         """
-        For a category,
-        Return spent, the sum of withdrawals.
+        Return the sum of withdrawals.
         """
         spent = 0
         for entry in category.ledger:
