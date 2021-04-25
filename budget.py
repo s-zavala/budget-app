@@ -172,6 +172,7 @@ if __name__ == '__main__':
     t1.deposit(.99, 'loose change')
 
     status = t1.withdraw(0, 'null')
+    t1.withdraw(199.99, 'BLT ingredients')
     status = t1.withdraw(.99, 'a very long description of a snack')
     status = t1.withdraw(2000.99, 'fancy snack')
     # Should fail bc lack of funds
