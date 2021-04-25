@@ -2,7 +2,8 @@
 
 Record spending with budget Categories. Make deposits and withdrawals. Print ledger history. Compare spending between budgets.
 
-Example:
+Example
+
 100|       
  90|       
  80|       
